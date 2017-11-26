@@ -1,6 +1,6 @@
 import java.io.IOException;
 import java.util.ArrayList;
-
+import java.util.Arrays;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -27,10 +27,14 @@ public class Process extends HttpServlet {
 		response.getWriter().append("Served at: ").append(request.getContextPath());
 	}
 	public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		login(request, response);
-		getLibrary(request, response);
-		getServletContext().getRequestDispatcher("/Bdd_access.jsp").forward(request, response);
-		
+		if(request.getParameter("access").equals("Bdd_access.jsp")) {
+			getLibrary(request, response);
+			getServletContext().getRequestDispatcher("/Bdd_access.jsp").forward(request, response);
+		}
+		else if(request.getParameter("access").equals("Index.jsp")) {
+			login(request, response);
+			getServletContext().getRequestDispatcher("/Index.jsp").forward(request, response);
+		}
 	}
 	
 	//Methode pour le checher le login utilisateur et renvoyer les bons attributs.
@@ -40,20 +44,15 @@ public class Process extends HttpServlet {
         
         //Login part
         if (login.equals("seb") && password.equals("pwdseb")) {
-        		  request.setAttribute("connected", "Bibliotecaire");
-              
-              
+        		  request.setAttribute("connected", "Bibliotecaire");              
         }
         
         else if (login.equals("max") && password.equals("pwdmax")) {
   		  	  request.setAttribute("connected", "Adherent");
-  		  	  
-        
         }
 
         else {
         		request.setAttribute("connected", "Mauvais login ou mot de passe.");
-		    
         }    
 	    }
 	
@@ -61,8 +60,22 @@ public class Process extends HttpServlet {
 	public void getLibrary(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 			Library lib = new Library();
 			ArrayList<Book> books = lib.bookage();
-			System.out.println(books);
-			request.setAttribute("list", books);
+			
+			String books_titles = "";
+			String books_author = "";
+			String books_id = "";
+			
+			for(int i=0; i<books.size(); i++) {
+				 books_titles += books.get(i).getTitle();
+				 books_titles += ";";
+				 books_author += books.get(i).getAuthor();
+				 books_author += ";";
+				 books_id += books.get(i).getId();
+				 books_id += ";";
+			}
+			request.setAttribute("books_titles", books_titles);
+			request.setAttribute("books_author", books_author);
+			request.setAttribute("books_id", books_id);
 			
 	}
 	}

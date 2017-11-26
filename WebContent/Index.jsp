@@ -16,7 +16,8 @@ out.println("Login: <input type='text' name='login' />");
 %>
 <p></p>
 <%
-out.println("Password: <input type='password' name='password' />"); 
+out.println("Password: <input type='password' name='password' />");
+out.println("<input type='hidden' name='access' value='Index.jsp' />");
 %>
 <p></p>
 <%
@@ -41,9 +42,10 @@ try{
 		<%
 		String profile = (String) request.getAttribute("connected");
 		String username = (String) request.getParameter("login");
-		out.println("<form action='Bdd_access.jsp' method='POST' >");
+		out.println("<form action='Process' method='POST' >");
 		out.println("<input type='hidden' name='profile' value='" + profile + "' />");
 		out.println("<input type='hidden' name='username' value='" + username + "' />");
+		out.println("<input type='hidden' name='access' value='Bdd_access.jsp' />");
 		out.println("<input type='submit' name='bdd' value='Accéder' />");
 		out.println("</form>");
 	}
@@ -56,9 +58,10 @@ try{
 		<%
 		String profile = (String) request.getAttribute("connected");
 		String username = (String) request.getParameter("login");
-		out.println("<form action='Bdd_access.jsp' method='GET' >");
+		out.println("<form action='Process' method='GET' >");
 		out.println("<input type='hidden' name='profile' value='" + profile + "' />");
 		out.println("<input type='hidden' name='username' value='" + username + "' />");
+		out.println("<input type='hidden' name='access' value='Bdd_access.jsp' />");
 		out.println("<input type='submit' name='bdd' value='Accéder' />");
 		out.println("</form>");
 	}
@@ -70,9 +73,10 @@ catch(NullPointerException e){
 	%>
 	<h2>Accéder à la base de données</h2>
 	<%
-	out.println("<form action='Bdd_access.jsp' method='POST' >");
+	out.println("<form action='Process' method='POST' >");
 	out.println("<input type='hidden' name='profile' value='" + profile + "' />");
 	out.println("<input type='hidden' name='username' value='" + username + "' />");
+	out.println("<input type='hidden' name='access' value='Bdd_access.jsp' />");
 	out.println("<input type='submit' name='bdd' value='Accéder' />");
 	out.println("</form>");
 	
