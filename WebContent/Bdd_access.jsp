@@ -23,11 +23,13 @@ String books_author = (String) request.getAttribute("books_author");
 String books_id = (String) request.getAttribute("books_id");
 String books_dispo = (String) request.getAttribute("books_dispo");
 String books_borrowed = (String) request.getAttribute("books_borrowed");
+String books_total = (String) request.getAttribute("books_total");
 String books_id_list[] = books_id.split(";"); 
 String books_author_list[] = books_author.split(";"); 
 String books_titles_list[] = books_titles.split(";"); 
 String books_dispo_list[] = books_dispo.split(";"); 
 String books_borrowed_list[] = books_borrowed.split(";"); 
+String books_total_list[] = books_total.split(";"); 
 %>
 
 <table>
@@ -55,10 +57,11 @@ String books_borrowed_list[] = books_borrowed.split(";");
         }
        %>
    </tr>
+
    <tr>
-   	<td><b>Disponible</b></td>
+   	<td><b>Total</b></td>
        <% 
-       for (String ss : books_dispo_list) {
+       for (String ss : books_total_list) {
     	   %><td><% out.println(ss);%><td><% 
         }
        %>
@@ -70,7 +73,16 @@ String books_borrowed_list[] = books_borrowed.split(";");
     	   %><td><% out.println(ss);%><td><% 
         }
        %>
+  </tr>
+   <tr>
+   	<td><b>Disponible</b></td>
+       <% 
+       for (String ss : books_dispo_list) {
+    	   %><td><% out.println(ss);%><td><% 
+        }
+       %>
    </tr>
+   
 </table>
 
 

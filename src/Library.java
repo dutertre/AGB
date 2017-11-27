@@ -22,6 +22,7 @@ public class Library {
 		bookList.add(book4);
 		bookList.add(book5);
 		bookList.add(book6);
+		bookList.add(book7);
 		
 		return bookList;
 	}

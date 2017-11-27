@@ -4,7 +4,7 @@ public class Book {
 	private int id;
 	private String title;
 	private String author;
-	private int dispo;
+	private int total;
 	private int borrowed;
 	
 	public int getId() {
@@ -19,21 +19,21 @@ public class Book {
 		return author;
 	}
 	
-	public int getDispo() {
-		return dispo;
+	public int getTotal() {
+		return total;
 	}
 	
 	public int getBorrow() {
 		return borrowed;
 	}
-
+	
 	//classe constructrice
-	public Book(int id, String author, String title, int dispo, int borrowed)
+	public Book(int id, String author, String title, int total, int borrowed)
 	{
 		this.id = id;
 		this.author = author;
 		this.title = title;
-		this.dispo = dispo;
+		this.total = total;
 		this.borrowed = borrowed;
 	}
 	
