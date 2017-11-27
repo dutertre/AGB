@@ -58,7 +58,7 @@ try{
 		<%
 		String profile = (String) request.getAttribute("connected");
 		String username = (String) request.getParameter("login");
-		out.println("<form action='Process' method='GET' >");
+		out.println("<form action='Process' method='POST' >");
 		out.println("<input type='hidden' name='profile' value='" + profile + "' />");
 		out.println("<input type='hidden' name='username' value='" + username + "' />");
 		out.println("<input type='hidden' name='access' value='Bdd_access.jsp' />");

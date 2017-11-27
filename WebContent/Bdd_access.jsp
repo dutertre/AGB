@@ -9,15 +9,32 @@
 <body>
 <h1>Accès à la base de données</h1>
 <%@ page import="java.util.ArrayList" %>
+<%@ page import="java.util.List" %>
 <% 
 out.println("Vous êtes bien connecté en session :");
 out.println(request.getParameter("profile"));
 out.println("avec l'utilisateur :");
 out.println(request.getParameter("username"));
 out.println(".");
+//recherche
+out.println("Rechercher un livre");
+out.println("<form action='Process' method='POST' >");
+out.println("Auteur ou Titre: <input type='text' name='content' />");
+out.println("<input type='hidden' name='access' value='Bdd_access.jsp' />");
+out.println("<input type='submit' name='search' value='Rechercher' />");
+out.println("</form>");
+//ajout
+out.println("Ajouter un exemplaire");
+out.println("<form action='Process' method='POST' >");
+out.println("Auteur: <input type='text' name='newAuthor' />");
+out.println("Titre: <input type='text' name='newTitle' />");
+out.println("Nombre d'exemplaires: <input type='number' name='quantity' min='1' />");
+out.println("<input type='hidden' name='access' value='Bdd_access.jsp' />");
+out.println("<input type='submit' name='add' value='Ajouter' />");
+out.println("</form>");
 %>
 <p>Voici la liste des livres disponibles :</p>
-<% 
+<%
 String books_titles = (String) request.getAttribute("books_titles");
 String books_author = (String) request.getAttribute("books_author");
 String books_id = (String) request.getAttribute("books_id");
@@ -29,10 +46,15 @@ String books_author_list[] = books_author.split(";");
 String books_titles_list[] = books_titles.split(";"); 
 String books_dispo_list[] = books_dispo.split(";"); 
 String books_borrowed_list[] = books_borrowed.split(";"); 
-String books_total_list[] = books_total.split(";"); 
+String books_total_list[] = books_total.split(";");
+
 %>
 
+
+
+		
 <table>
+
    <tr>
    		<td><b>Id</b></td>
        <% 
@@ -50,7 +72,7 @@ String books_total_list[] = books_total.split(";");
        %>
    </tr>
    <tr>
-   	<td><b>Autheur</b></td>
+   	<td><b>Auteur</b></td>
        <% 
        for (String ss : books_author_list) {
     	   %><td><% out.println(ss);%><td><% 

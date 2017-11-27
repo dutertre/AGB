@@ -23,6 +23,11 @@ public class Book {
 		return total;
 	}
 	
+	//sert à incrémenter le total dans le cas d'un ajout d'exemplaires
+	public void setTotal(int total) {
+		this.total += total;
+	}
+	
 	public int getBorrow() {
 		return borrowed;
 	}
