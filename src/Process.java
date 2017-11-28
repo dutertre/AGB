@@ -29,13 +29,21 @@ public class Process extends HttpServlet {
 		response.getWriter().append("Served at: ").append(request.getContextPath());
 	}
 	public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		if(request.getParameter("access").equals("Bdd_access.jsp")) {
-			getLibrary(request, response);
-			getServletContext().getRequestDispatcher("/Bdd_access.jsp").forward(request, response);
-		}
-		else if(request.getParameter("access").equals("Index.jsp")) {
+		if(request.getParameter("access").equals("Index.jsp")) {
 			login(request, response);
 			getServletContext().getRequestDispatcher("/Index.jsp").forward(request, response);
+		}
+		else if(request.getParameter("access").equals("Bdd_biblio.jsp")) {           
+			getLibrary(request, response);
+			getServletContext().getRequestDispatcher("/Bdd_biblio.jsp").forward(request, response);
+		}
+		else if(request.getParameter("access").equals("Bdd_anon.jsp")) {
+			getLibrary(request, response);
+			getServletContext().getRequestDispatcher("/Bdd_anon.jsp").forward(request, response);
+		}
+		else if(request.getParameter("access").equals("Bdd_adh.jsp")) {
+			getLibrary(request, response);
+			getServletContext().getRequestDispatcher("/Bdd_adh.jsp").forward(request, response);
 		}
 	}
 	
@@ -60,32 +68,15 @@ public class Process extends HttpServlet {
 	
 	//Méthode pour créer une bibliothèque
 	public void getLibrary(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-			
 			//compteurs pour la recherche
 			int cmp = 0;
 			int breakpoint =0;
-			
 			String books_titles = "";
 			String books_author = "";
 			String books_id = "";
 			String books_dispo = "";
 			String books_borrowed = "";
 			String books_total = "";
-			/*
-			for(int i=0; i<books.size(); i++) {
-				 books_titles += books.get(i).getTitle();
-				 books_titles += ";";
-				 books_author += books.get(i).getAuthor();
-				 books_author += ";";
-				 books_id += books.get(i).getId();
-				 books_id += ";";
-				 books_dispo += books.get(i).getTotal() - books.get(i).getBorrow();
-				 books_dispo += ";";
-				 books_borrowed += books.get(i).getBorrow();
-				 books_borrowed += ";";
-				 books_total += books.get(i).getTotal();
-				 books_total += ";";
-			}*/
 			
 			try {
 				String newAuthor = (String) request.getParameter("newAuthor");
@@ -123,11 +114,9 @@ public class Process extends HttpServlet {
 				System.out.println("catch at ajout");
 			}
 			
-			
 			try {
 				String content = (String) request.getParameter("content");
 				
-			
 			//fonction recherche
 				for(int i=0; i<books.size(); i++) {
 					if(content.toLowerCase().contains(books.get(i).getTitle().toLowerCase()) || content.toLowerCase().contains(books.get(i).getAuthor().toLowerCase())) {
@@ -142,7 +131,6 @@ public class Process extends HttpServlet {
 					 books_total += books.get(i).getTotal();
 					 books_total += ";";
 					}
-				
 			}
 			
 			}

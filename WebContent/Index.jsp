@@ -45,7 +45,7 @@ try{
 		out.println("<form action='Process' method='POST' >");
 		out.println("<input type='hidden' name='profile' value='" + profile + "' />");
 		out.println("<input type='hidden' name='username' value='" + username + "' />");
-		out.println("<input type='hidden' name='access' value='Bdd_access.jsp' />");
+		out.println("<input type='hidden' name='access' value='Bdd_biblio.jsp' />");
 		out.println("<input type='submit' name='bdd' value='Accéder' />");
 		out.println("</form>");
 	}
@@ -61,7 +61,7 @@ try{
 		out.println("<form action='Process' method='POST' >");
 		out.println("<input type='hidden' name='profile' value='" + profile + "' />");
 		out.println("<input type='hidden' name='username' value='" + username + "' />");
-		out.println("<input type='hidden' name='access' value='Bdd_access.jsp' />");
+		out.println("<input type='hidden' name='access' value='Bdd_adh.jsp' />");
 		out.println("<input type='submit' name='bdd' value='Accéder' />");
 		out.println("</form>");
 	}
@@ -76,7 +76,7 @@ catch(NullPointerException e){
 	out.println("<form action='Process' method='POST' >");
 	out.println("<input type='hidden' name='profile' value='" + profile + "' />");
 	out.println("<input type='hidden' name='username' value='" + username + "' />");
-	out.println("<input type='hidden' name='access' value='Bdd_access.jsp' />");
+	out.println("<input type='hidden' name='access' value='Bdd_anon.jsp' />");
 	out.println("<input type='submit' name='bdd' value='Accéder' />");
 	out.println("</form>");
 	
