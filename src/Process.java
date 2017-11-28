@@ -130,7 +130,7 @@ public class Process extends HttpServlet {
 			
 			//fonction recherche
 				for(int i=0; i<books.size(); i++) {
-					if(content.equals(books.get(i).getTitle()) || content.equals(books.get(i).getAuthor())) {
+					if(content.toLowerCase().contains(books.get(i).getTitle().toLowerCase()) || content.toLowerCase().contains(books.get(i).getAuthor().toLowerCase())) {
 					books_titles += books.get(i).getTitle();
 					 books_titles += ";";
 					 books_author += books.get(i).getAuthor();
