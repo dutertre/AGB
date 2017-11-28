@@ -12,9 +12,9 @@
 <%@ page import="java.util.List" %>
 <% 
 out.println("Vous êtes bien connecté en session :");
-out.println(request.getParameter("profile"));
+out.println(session.getAttribute("connected"));
 out.println("avec l'utilisateur :");
-out.println(request.getParameter("username"));
+out.println(session.getAttribute("username"));
 out.println(".");
 %>
 <h2>Rechercher un livre</h2>
@@ -28,12 +28,12 @@ out.println("</form>");
 %>
 <h2>Résultat de la recherche</h2>
 <%
-String books_titles = (String) request.getAttribute("books_titles");
-String books_author = (String) request.getAttribute("books_author");
-String books_id = (String) request.getAttribute("books_id");
-String books_dispo = (String) request.getAttribute("books_dispo");
-String books_borrowed = (String) request.getAttribute("books_borrowed");
-String books_total = (String) request.getAttribute("books_total");
+String books_titles = (String) session.getAttribute("books_titles");
+String books_author = (String) session.getAttribute("books_author");
+String books_id = (String) session.getAttribute("books_id");
+String books_dispo = (String) session.getAttribute("books_dispo");
+String books_borrowed = (String) session.getAttribute("books_borrowed");
+String books_total = (String) session.getAttribute("books_total");
 String books_id_list[] = books_id.split(";"); 
 String books_author_list[] = books_author.split(";"); 
 String books_titles_list[] = books_titles.split(";"); 

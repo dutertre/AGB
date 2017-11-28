@@ -6,6 +6,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 /**
  * Servlet implementation class Process
@@ -38,6 +39,7 @@ public class Process extends HttpServlet {
 			getServletContext().getRequestDispatcher("/Bdd_biblio.jsp").forward(request, response);
 		}
 		else if(request.getParameter("access").equals("Bdd_anon.jsp")) {
+			login(request, response);
 			getLibrary(request, response);
 			getServletContext().getRequestDispatcher("/Bdd_anon.jsp").forward(request, response);
 		}
@@ -54,15 +56,25 @@ public class Process extends HttpServlet {
         
         //Login part
         if (login.equals("seb") && password.equals("pwdseb")) {
-        		  request.setAttribute("connected", "Bibliotecaire");              
+        		  HttpSession session = request.getSession();
+        		  session.setMaxInactiveInterval(30);
+        		  session.setAttribute("connected", "Bibliotecaire");
+        		  session.setAttribute("username", login);
+        		  
         }
         
         else if (login.equals("max") && password.equals("pwdmax")) {
-  		  	  request.setAttribute("connected", "Adherent");
+	        	  HttpSession session = request.getSession();
+	  		  session.setMaxInactiveInterval(30);
+	  		  session.setAttribute("connected", "Adherent");
+	  		  session.setAttribute("username", login);
         }
 
         else {
-        		request.setAttribute("connected", "Mauvais login ou mot de passe.");
+        		  HttpSession session = request.getSession();
+        		  session.setMaxInactiveInterval(30);
+        		  session.setAttribute("connected", "Temporaire");
+        		  session.setAttribute("username", "Anonyme");
         }    
 	    }
 	
@@ -77,6 +89,7 @@ public class Process extends HttpServlet {
 			String books_dispo = "";
 			String books_borrowed = "";
 			String books_total = "";
+			HttpSession session = request.getSession();
 			
 			try {
 				String newAuthor = (String) request.getParameter("newAuthor");
@@ -137,13 +150,13 @@ public class Process extends HttpServlet {
 			catch(NullPointerException e) {
 				System.out.println("catch at search");
 			}
-			request.setAttribute("books", books);
-			request.setAttribute("books_titles", books_titles);
-			request.setAttribute("books_author", books_author);
-			request.setAttribute("books_id", books_id);
-			request.setAttribute("books_dispo", books_dispo);
-			request.setAttribute("books_borrowed", books_borrowed);
-			request.setAttribute("books_total", books_total);
+			session.setAttribute("books", books);
+			session.setAttribute("books_titles", books_titles);
+			session.setAttribute("books_author", books_author);
+			session.setAttribute("books_id", books_id);
+			session.setAttribute("books_dispo", books_dispo);
+			session.setAttribute("books_borrowed", books_borrowed);
+			session.setAttribute("books_total", books_total);
 				
 			
 			

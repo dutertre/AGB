@@ -28,18 +28,18 @@ out.println("</form>");
 <%
 
 try{
-	if (request.getAttribute("connected").equals("Mauvais login ou mot de passe.")){
-		out.println(request.getAttribute("connected"));
+	if (session.getAttribute("connected").equals("Mauvais login ou mot de passe.")){
+		out.println(session.getAttribute("connected"));
 	}
-	else if (request.getAttribute("connected").equals("Bibliotecaire")){
+	else if (session.getAttribute("connected").equals("Bibliotecaire")){
 		out.println("Vous êtes bien connecté en profil Bibliothécaire avec l'utilisateur :");
-		out.println(request.getParameter("login"));
+		out.println(session.getAttribute("username"));
 		out.println(".");
 		%>
 		<h2>Accéder à la base de données</h2>
 		<%
-		String profile = (String) request.getAttribute("connected");
-		String username = (String) request.getParameter("login");
+		String profile = (String) session.getAttribute("connected");
+		String username = (String) session.getAttribute("login");
 		out.println("<form action='Process' method='POST' >");
 		out.println("<input type='hidden' name='profile' value='" + profile + "' />");
 		out.println("<input type='hidden' name='username' value='" + username + "' />");
@@ -47,15 +47,15 @@ try{
 		out.println("<input type='submit' name='bdd' value='Accéder' />");
 		out.println("</form>");
 	}
-	else if (request.getAttribute("connected").equals("Adherent")){
+	else if (session.getAttribute("connected").equals("Adherent")){
 		out.println("Vous êtes bien connecté en profil Adhérent avec l'utilisateur :");
-		out.println(request.getParameter("login"));
+		out.println(session.getAttribute("username"));
 		out.println(".");
 		%>
 		<h2>Accéder à la base de données</h2>
 		<%
-		String profile = (String) request.getAttribute("connected");
-		String username = (String) request.getParameter("login");
+		String profile = (String) session.getAttribute("connected");
+		String username = (String) session.getAttribute("login");
 		out.println("<form action='Process' method='POST' >");
 		out.println("<input type='hidden' name='profile' value='" + profile + "' />");
 		out.println("<input type='hidden' name='username' value='" + username + "' />");
@@ -63,15 +63,21 @@ try{
 		out.println("<input type='submit' name='bdd' value='Accéder' />");
 		out.println("</form>");
 	}
+	else if (session.getAttribute("connected").equals("Temporaire")){
+		out.println("Vous n'avez pas rentré de login/mot de passe reconnu.");
+	}
 }
 catch(NullPointerException e){
-	String profile = "Anonyme";
-	String username = "Temporaire";
+	
+	String profile = "Temporaire";
+	String username = "Anonyme";
 	out.println("Vous n'êtes pas connecté !");
 	%>
 	<h2>Accéder à la base de données</h2>
 	<%
 	out.println("<form action='Process' method='POST' >");
+	out.println("<input type='hidden' name='login' value='" + "null" + "' />");
+	out.println("<input type='hidden' name='password' value='" + "null" + "' />");
 	out.println("<input type='hidden' name='profile' value='" + profile + "' />");
 	out.println("<input type='hidden' name='username' value='" + username + "' />");
 	out.println("<input type='hidden' name='access' value='Bdd_anon.jsp' />");
