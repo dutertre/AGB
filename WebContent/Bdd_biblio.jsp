@@ -30,10 +30,23 @@ out.println("</form>");
 <h2>Ajouter ou supprimer un livre</h2>
 <% 
 out.println("<form action='Process' method='POST' >");
-out.println("Auteur: <input type='text' name='delAuthor' />");
-out.println("Titre: <input type='text' name='delTitle' />");
+out.println("Auteur: <input type='text' name='author' />");
+out.println("Titre: <input type='text' name='title' />");
 out.println("<input type='hidden' name='access' value='Bdd_biblio.jsp' />");
-out.println("<input type='submit' name='add' value='Supprimer le livre' />");
+out.println("<input type='submit' name='add' value='Ajouter le livre' />");
+out.println("<input type='submit' name='remove' value='Supprimer le livre' />");
+out.println("</form>");
+%>
+<h2>Réserver ou enregistrer un emprunt</h2>
+<% 
+out.println("<form action='Process' method='POST' >");
+out.println("Auteur: <input type='text' name='author' />");
+out.println("Titre: <input type='text' name='title' />");
+out.println("Adhérent: <input type='text' name='user' />");
+out.println("Date de l'emprunt: <input type='date' name='date' />");
+out.println("<input type='hidden' name='access' value='Bdd_biblio.jsp' />");
+out.println("<input type='submit' name='empruntage' value='Emprunt' />");
+out.println("<input type='submit' name='empruntage' value='Réservation' />");
 out.println("</form>");
 %>
 <h2>Rechercher un livre</h2>

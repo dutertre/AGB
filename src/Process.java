@@ -16,7 +16,8 @@ public class Process extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	Library lib = new Library();
 	ArrayList<Book> books = lib.bookage();
-       
+	ArrayList<Emprunt> emprunts = new ArrayList<Emprunt>();
+	
     /**
      * @see HttpServlet#HttpServlet()
      */
@@ -91,6 +92,7 @@ public class Process extends HttpServlet {
 			String books_total = "";
 			HttpSession session = request.getSession();
 			
+			//ajouter un livre
 			try {
 				String newAuthor = (String) request.getParameter("newAuthor");
 				String newTitle = (String) request.getParameter("newTitle");
@@ -121,11 +123,47 @@ public class Process extends HttpServlet {
 					books.add(book);
 					System.out.println("ajout de "+ newTitle);
 					}
+				}
+				catch(NullPointerException e)
+				{
+					System.out.println("catch at ajout");
+				}
 				
-			}
-			catch(NullPointerException e) {
-				System.out.println("catch at ajout");
-			}
+				try {
+			///process EMPRUNT
+
+                String empruntage = (String) request.getParameter("empruntage");
+                String author = (String) request.getParameter("author");
+                String title = (String) request.getParameter("title");
+                String date = (String) request.getParameter("date");
+                String user = (String) request.getParameter("user");
+                
+                //on va chercher le livre dans la liste
+                for(int i=0; i<books.size(); i++) {
+                    if (title.equals(books.get(i).getTitle()) && author.equals(books.get(i).getAuthor())) {
+
+                        if(empruntage.equals("Emprunt")) {
+                        books.get(i).setBorrow();
+                        Emprunt emprunt = new Emprunt(books.get(i), user, date, true);
+                        emprunts.add(emprunt);
+                        System.out.println(author + title + "emprunté");
+                        }
+                        //sinon c'est une réservation
+                        else {
+                        	Emprunt emprunt = new Emprunt(books.get(i), user, date, false);
+                            emprunts.add(emprunt);
+                            System.out.println(author + title + "réservé");
+                        }
+                    break;
+                        	
+                        }
+                }
+
+
+            }
+            catch(NullPointerException e) {
+                System.out.println("catch at resa");
+            }
 			
 			try {
 				String content = (String) request.getParameter("content");

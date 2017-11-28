@@ -31,6 +31,10 @@ public class Book {
 	public int getBorrow() {
 		return borrowed;
 	}
+	public void setBorrow()
+	{
+		this.borrowed +=1;
+	}
 	
 	//classe constructrice
 	public Book(int id, String author, String title, int total, int borrowed)
