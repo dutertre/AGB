@@ -24,9 +24,7 @@ out.println("<input type='hidden' name='access' value='Index.jsp' />");
 out.println("<input type='submit' value='Connect' />");
 out.println("</form>");
 %>
-
 <h2>Informations</h2>
-
 <%
 
 try{

@@ -63,7 +63,6 @@ String books_total_list[] = books_total.split(";");
 
 %>	
 <table>
-
    <tr>
    		<td style="border: 1px dotted black;"><b>Id</b></td>
        <% 
@@ -113,7 +112,6 @@ String books_total_list[] = books_total.split(";");
         }
        %>
    </tr>
-   
 </table>
 
 
