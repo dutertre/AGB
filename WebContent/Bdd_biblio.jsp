@@ -80,14 +80,6 @@ String books_total_list[] = books_total.split(";");
 %>	
 <table>
    <tr>
-   		<td style="border: 1px dotted black;"><b>Id</b></td>
-       <% 
-       for (String ss : books_id_list) {
-    	   %><td style="border: 1px dotted black;"><% out.println(ss);%><td><% 
-        }
-       %>
-   </tr>
-   <tr>
    <td style="border: 1px dotted black;"><b>Titre</b></td>
        <% 
        for (String ss : books_titles_list) {

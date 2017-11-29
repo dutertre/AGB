@@ -4,11 +4,12 @@ Ceci est la documentation de AGB (Application de Gestion de Bibliothèque) déve
 
 En tant qu'utilisateur Anonyme, vous pourrez faire une recherche de livre avec soit le titre du livre soit son auteur. Voici la liste des livres disponibles pour le moment dans la maquette :
 
-"Pierre Boule","La Planète des Singes"
-"Sylvain Tesson","Dans les forêts de Sibérie"
-"Eric Zemmour","Le Suicide Français"
+"Pierre Boule","La Planete des Singes"
+"Sylvain Tesson","Dans les forêts de Siberie"
+"Albert Camus","La Peste"
 "Haruki Murakami","1Q84 Trilogie"
-"Hergé","Tintin au Congo"
+"Herge","Tintin au Tibet"
+"Herge","Objectif Lune"
 "Karl Marx","Das Kapital"
 "Timothy Lachin","Into the Cronosphere"
 
