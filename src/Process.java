@@ -40,7 +40,10 @@ public class Process extends HttpServlet {
 			getServletContext().getRequestDispatcher("/Bdd_biblio.jsp").forward(request, response);
 		}
 		else if(request.getParameter("access").equals("Bdd_anon.jsp")) {
-			login(request, response);
+			HttpSession session = request.getSession();
+  		  	session.setMaxInactiveInterval(30);
+  		  	session.setAttribute("connected", "Temporaire");
+  		  	session.setAttribute("username", "Anonyme");
 			getLibrary(request, response);
 			getServletContext().getRequestDispatcher("/Bdd_anon.jsp").forward(request, response);
 		}
@@ -48,8 +51,15 @@ public class Process extends HttpServlet {
 			getLibrary(request, response);
 			getServletContext().getRequestDispatcher("/Bdd_adh.jsp").forward(request, response);
 		}
+		else if(request.getParameter("access").equals("Logout")) {
+			logout(request, response);
+			getServletContext().getRequestDispatcher("/Index.jsp").forward(request, response);
+		}
 	}
-	
+	public void logout(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		HttpSession session = request.getSession();
+		session.invalidate();
+	}
 	//Methode pour le checher le login utilisateur et renvoyer les bons attributs.
 	public void login(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String login = (String) request.getParameter("login");
@@ -71,15 +81,16 @@ public class Process extends HttpServlet {
 	  		  session.setAttribute("username", login);
         }
 
-        else {
-        		  HttpSession session = request.getSession();
-        		  session.setMaxInactiveInterval(30);
-        		  session.setAttribute("connected", "Temporaire");
-        		  session.setAttribute("username", "Anonyme");
-        }    
+        //else {
+        //		  HttpSession session = request.getSession();
+        	//	  session.setMaxInactiveInterval(30);
+        	//	  session.setAttribute("connected", "Temporaire");
+        	//	  session.setAttribute("username", "Anonyme");
+        //}    
 	    }
 	
 	//Méthode pour créer une bibliothèque
+	
 	public void getLibrary(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 			//compteurs pour la recherche
 			int cmp = 0;
@@ -92,20 +103,22 @@ public class Process extends HttpServlet {
 			String books_total = "";
 			HttpSession session = request.getSession();
 			
-			//ajouter un livre
+			//ajouter ou retirer des exemplaires
 			try {
 				String newAuthor = (String) request.getParameter("newAuthor");
 				String newTitle = (String) request.getParameter("newTitle");
 				String quantity = (String) request.getParameter("quantity");
 				System.out.println(newAuthor + newTitle + quantity);
 				
-				//ajout de livre
+				//ajout d'exemplaires
 				for(int i=0; i<books.size(); i++) {
 					if (newTitle.equals(books.get(i).getTitle()) && newAuthor.equals(books.get(i).getAuthor())) {
-						System.out.println("existe deja en " + books.get(i).getTotal() + "exemplaires");
-						System.out.println("on rajoute "+ Integer.parseInt(quantity) + "exemplaires");
 						
-						books.get(i).setTotal(Integer.parseInt(quantity));
+						System.out.println("existe deja en " + books.get(i).getTotal() + "exemplaires");
+						System.out.println("on effectue l'opération "+ Integer.parseInt(quantity) + "exemplaires");
+						//on règle comme quantité disponible la quantité présente + ce qu'on ajoute
+						books.get(i).setTotal(books.get(i).getTotal()+Integer.parseInt(quantity));
+						if (books.get(i).getTotal() < 0) books.get(i).setTotal(0);
 						//si on a ajouté la quantité désirée on sort de la boucle
 						breakpoint=i;
 						break;
@@ -123,19 +136,40 @@ public class Process extends HttpServlet {
 					books.add(book);
 					System.out.println("ajout de "+ newTitle);
 					}
-				}
+			}
 				catch(NullPointerException e)
 				{
 					System.out.println("catch at ajout");
 				}
+			//supprimer un livre
+			try {
+				String author = (String) request.getParameter("author");
+				String title = (String) request.getParameter("title");
+				String remove = (String) request.getParameter("remove");
+				//suppression d'un livre
+				if(remove.equals("Suppression")) {
+				for(int i=0; i<books.size(); i++) {
+					if (title.equals(books.get(i).getTitle()) && author.equals(books.get(i).getAuthor())) {
+						
+						System.out.println("existe en " + books.get(i).getTotal() + " exemplaires, on va le supprimer");
+						//on règle comme quantité disponible la quantité présente + ce qu'on ajoute
+						books.remove(i);
+						break;
+					}
+				}
+				}
 				
+			}
+			catch(NullPointerException e)
+			{
+				System.out.println("catch at suppression");
+			}
 				try {
-			///process EMPRUNT
+			///process EMPRUNT / restitution
 
                 String empruntage = (String) request.getParameter("empruntage");
                 String author = (String) request.getParameter("author");
                 String title = (String) request.getParameter("title");
-                String date = (String) request.getParameter("date");
                 String user = (String) request.getParameter("user");
                 
                 //on va chercher le livre dans la liste
@@ -143,29 +177,127 @@ public class Process extends HttpServlet {
                     if (title.equals(books.get(i).getTitle()) && author.equals(books.get(i).getAuthor())) {
 
                         if(empruntage.equals("Emprunt")) {
-                        books.get(i).setBorrow();
-                        Emprunt emprunt = new Emprunt(books.get(i), user, date, true);
-                        emprunts.add(emprunt);
-                        System.out.println(author + title + "emprunté");
+                        	//on parcourt la liste des emprunts pour voir si la réservation existe
+                        	for(int j = 0; j<emprunts.size(); j++)
+                        	{
+                        		//on trouve une réservation avec le livre et l'utilisateur
+                        		if(user.equals(emprunts.get(j).getUser()) && emprunts.get(j).getBook() == books.get(i))
+                        		{
+                        			//on passe emprunt à true
+                        			emprunts.get(j).setEmprunt(true);
+                        			System.out.println("Réservation annulée pour" + user);
+                        			//on marque le livre comme emprunté
+                        			books.get(i).setBorrow();
+                        			System.out.println(author + title + "emprunté");
+                        			cmp++;
+                        			break;
+                        		
+                        		}
+                        		
                         }
-                        //sinon c'est une réservation
-                        else {
-                        	Emprunt emprunt = new Emprunt(books.get(i), user, date, false);
-                            emprunts.add(emprunt);
-                            System.out.println(author + title + "réservé");
+                        	// Quand on a terminé la boucle
+                        //si le compteur est nul c'est un emprunt qui n'était pas réservé
+                    		if(cmp == 0) {
+                        		//on marque le livre emprunté
+                        books.get(i).setBorrow();
+                        //on enregistre un nouvel emprunt
+                        Emprunt emprunt = new Emprunt(books.get(i), user, "plop", true);
+                        emprunts.add(emprunt);
+                        System.out.println(author + title + " emprunté");
+                            }
+                        }
+                        
+                        //cas restitution
+                        else if (empruntage.equals("Restitution"))
+                        {
+                        	//on parcourt la liste des emprunts pour voir si l'emprunt existe
+                        	for(int j = 0; j<emprunts.size(); j++)
+                        	{
+                        		//on trouve un emprunt avec le livre et l'utilisateur
+                        		if(user.equals(emprunts.get(j).getUser()) && emprunts.get(j).getBook() == books.get(i))
+                        		{
+                        			//on le supprime
+                        			emprunts.remove(j).setEmprunt(true);
+                        			System.out.println(user +" a restitué " + title);
+                        			//on marque le livre comme rendu
+                        			books.get(i).setReturn();
+                        			break;
+                        		}
+                        		
+                        }
+                        	
+                        }
+                    }
+                        	     	
+                }
+
+            }
+            catch(NullPointerException e) {
+                System.out.println("catch at emprunt");
+            }
+				
+				///process réservation
+
+                try {
+				String resa = (String) request.getParameter("resa");
+                String author = (String) request.getParameter("author");
+                String title = (String) request.getParameter("title");
+                String date = (String) request.getParameter("date");
+                
+                //on va chercher le livre dans la liste
+                for(int i=0; i<books.size(); i++) {
+                    if (title.equals(books.get(i).getTitle()) && author.equals(books.get(i).getAuthor())) {
+
+                        if(resa.equals("Reservation")) {
+                        books.get(i).setBorrow();
+                        Emprunt emprunt = new Emprunt(books.get(i), (String)session.getAttribute("username"), date, false);
+                        emprunts.add(emprunt);
+                        System.out.println(author + title + "réservé");
                         }
                     break;
                         	
                         }
                 }
 
-
             }
             catch(NullPointerException e) {
                 System.out.println("catch at resa");
             }
+              ///process cancel
+
+                try {
+				String cancel = (String) request.getParameter("cancel");
+                String author = (String) request.getParameter("author");
+                String title = (String) request.getParameter("title");
+                if (cancel.equals("Annuler")){
+                //on va chercher le livre dans la liste
+                for(int i=0; i<books.size(); i++) {
+                    if (title.equals(books.get(i).getTitle()) && author.equals(books.get(i).getAuthor())) {
+
+                    //on parcourt la liste des emprunts pour voir si la réservation existe
+                    	for(int j = 0; j<emprunts.size(); j++)
+                    	{
+                    		//on trouve une réservation avec le livre et l'utilisateur
+                    		if(session.getAttribute("username").equals(emprunts.get(j).getUser()) && emprunts.get(j).getBook() == books.get(i))
+                    		{
+                    			emprunts.remove(j);
+                    			System.out.println("Réservation annulée");
+                    		}		
+                    	}
+
+                    break;
+                        	
+                        }
+                }
+                }
+
+            }
+            catch(NullPointerException e) {
+                System.out.println("catch at cancel");
+            }
 			
-			try {
+			//SEARCH
+				try {
 				String content = (String) request.getParameter("content");
 				
 			//fonction recherche

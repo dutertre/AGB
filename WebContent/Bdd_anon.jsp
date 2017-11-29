@@ -16,6 +16,10 @@ out.println(session.getAttribute("connected"));
 out.println("avec l'utilisateur :");
 out.println(session.getAttribute("username"));
 out.println(".");
+out.println("<form action='Process' method='POST' >");
+out.println("<input type='hidden' name='access' value='Logout' />");
+out.println("<input type='submit' name='bdd' value='Revenir à l'accueil' />");
+out.println("</form>");
 %>
 <h2>Rechercher un livre</h2>
 <% 

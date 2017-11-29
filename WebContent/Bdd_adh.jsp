@@ -16,6 +16,30 @@ out.println(session.getAttribute("connected"));
 out.println("avec l'utilisateur :");
 out.println(session.getAttribute("username"));
 out.println(".");
+out.println("<form action='Process' method='POST' >");
+out.println("<input type='hidden' name='access' value='Logout' />");
+out.println("<input type='submit' name='bdd' value='Se déconnecter' />");
+out.println("</form>");
+%>
+<h2>Réserver un livre</h2>
+<% 
+out.println("<form action='Process' method='POST' >");
+out.println("Auteur: <input type='text' name='author' />");
+out.println("Titre: <input type='text' name='title' />");
+out.println("Date de l'emprunt: <input type='date' name='date' />");
+out.println("<input type='hidden' name='access' value='Bdd_adh.jsp' />");
+out.println("<input type='submit' name='resa' value='Reservation' />");
+out.println("</form>");
+%>
+<h2>Annuler une réservation</h2>
+<% 
+out.println("<form action='Process' method='POST' >");
+out.println("Auteur: <input type='text' name='author' />");
+out.println("Titre: <input type='text' name='title' />");
+out.println("Date de l'emprunt: <input type='date' name='date' />");
+out.println("<input type='hidden' name='access' value='Bdd_adh.jsp' />");
+out.println("<input type='submit' name='cancel' value='Annuler' />");
+out.println("</form>");
 %>
 <h2>Rechercher un livre</h2>
 <% 

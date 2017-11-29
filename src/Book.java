@@ -25,7 +25,7 @@ public class Book {
 	
 	//sert à incrémenter le total dans le cas d'un ajout d'exemplaires
 	public void setTotal(int total) {
-		this.total += total;
+		this.total = total;
 	}
 	
 	public int getBorrow() {
@@ -34,6 +34,10 @@ public class Book {
 	public void setBorrow()
 	{
 		this.borrowed +=1;
+	}
+	public void setReturn()
+	{
+		this.borrowed -=1;
 	}
 	
 	//classe constructrice
