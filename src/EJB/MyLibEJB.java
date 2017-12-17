@@ -1,14 +1,30 @@
+package EJB;
+
 import java.util.ArrayList;
 
-public class Library {
-	
-	public static ArrayList<Book> bookage()
+import javax.ejb.LocalBean;
+import javax.ejb.Singleton;
+
+import AGBpkg.Book;
+
+/**
+ * Session Bean implementation class MyLibEJB
+ */
+@Singleton
+@LocalBean
+public class MyLibEJB implements MyLibEJBLocal {
+
+    /**
+     * Default constructor. 
+     */
+    public MyLibEJB() {
+        // TODO Auto-generated constructor stub
+    }
+    public ArrayList<Book> toBook()
 	{
 		ArrayList<Book> bookList = new ArrayList<Book>();
 		
-		/*bibliothèque statique
-		 * 
-		 */
+		/*bibliothèque statique*/
 		Book book1 = new Book(1,"Pierre Boule","La Planete des Singes", 10, 3);
 		Book book2 = new Book(2,"Sylvain Tesson","Dans les forêts de Siberie", 3, 1);
 		Book book3 = new Book(3,"Albert Camus","La Peste", 4, 4);
@@ -27,7 +43,4 @@ public class Library {
 		bookList.add(book8);
 		return bookList;
 	}
-	
-	
-	
 }

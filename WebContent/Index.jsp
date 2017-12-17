@@ -10,20 +10,16 @@
 
 <h1>Application de Gestion de Bibliothèque</h1>
 <h2>Connexion</h2>
-<%
-out.println("<form action='Process' method='POST' >");
-out.println("Login: <input type='text' name='login' />");
-%>
+
+<form action='Process' method='POST' >
+Login: <input type='text' name='login' />
 <p></p>
-<%
-out.println("Password: <input type='password' name='password' />");
-out.println("<input type='hidden' name='access' value='Index.jsp' />");
-%>
+Password: <input type='password' name='password' />
+<input type='hidden' name='access' value='Index.jsp' />
 <p></p>
-<%
-out.println("<input type='submit' value='Connect' />");
-out.println("</form>");
-%>
+<input type='submit' value='Connect' />
+</form>
+
 <h2>Informations</h2>
 <%
 
@@ -40,12 +36,16 @@ try{
 		<%
 		String profile = (String) session.getAttribute("connected");
 		String username = (String) session.getAttribute("login");
-		out.println("<form action='Process' method='POST' >");
+		%>
+		<form action='Process' method='POST' >
+		<%
 		out.println("<input type='hidden' name='profile' value='" + profile + "' />");
 		out.println("<input type='hidden' name='username' value='" + username + "' />");
-		out.println("<input type='hidden' name='access' value='Bdd_biblio.jsp' />");
-		out.println("<input type='submit' name='bdd' value='Accéder' />");
-		out.println("</form>");
+		%>
+		<input type='hidden' name='access' value='Bdd_biblio.jsp' />
+		<input type='submit' name='bdd' value='Accéder' />
+		</form>
+		<%
 	}
 	else if (session.getAttribute("connected").equals("Adherent")){
 		out.println("Vous êtes bien connecté en profil Adhérent avec l'utilisateur :");

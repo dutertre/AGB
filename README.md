@@ -23,3 +23,4 @@ Ajouter ou supprimer des exemplaires : s'il s'agit d'un nouveau livre, celui-ci 
 Supprimer un livre : retire un livre de la bibliothèque.
 Emprunt ou Restitution : enregistre un emprunt ou une restitution pour un utilisateur. Lors d'un emprunt, si l'exemplaire visé faisait l'objet d'une réservation alors cette réservation devient un emprunt (marqué grâce à un booleen) et l'exemplaire est marqué comme emprunté. En cas de restitution : l'emprunt est supprimé de la liste des emprunts.
 
+La deuxième partie du TP a donc été d'implémenter un EJB (Entreprise Java Bean) dans notre architecture. Cet EJB est un EJB Singleton qui permet donc à de multiples utilisateurs de se connecter et d'accéder aux livres de la liste, d'ajouter de nouveaux livres, de les supprimer, de les réserver, etc... 

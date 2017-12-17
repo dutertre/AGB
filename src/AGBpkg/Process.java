@@ -1,21 +1,40 @@
+package AGBpkg;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import javax.ejb.EJB;
+import javax.ejb.Singleton;
+import javax.naming.InitialContext;
+import javax.naming.NamingException;
+
+import EJB.MyLibEJB;
 
 /**
  * Servlet implementation class Process
  */
 @WebServlet("/Process")
+@Singleton
 public class Process extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-	Library lib = new Library();
-	ArrayList<Book> books = lib.bookage();
+
+	@EJB
+	private MyLibEJB monEJB = new MyLibEJB();
+	ArrayList<Book> books = monEJB.toBook();
+	InitialContext context;
+	{
+		try {
+			context = new InitialContext();
+		} catch(NamingException e) {
+			System.out.println("catch at context");
+		}
+		
+	}
+
 	ArrayList<Emprunt> emprunts = new ArrayList<Emprunt>();
 	
     /**
@@ -62,6 +81,13 @@ public class Process extends HttpServlet {
 	}
 	//Methode pour le checher le login utilisateur et renvoyer les bons attributs.
 	public void login(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		try {
+			monEJB = (MyLibEJB) context.lookup("java:global/AGB/MyLibEJB!EJB.MyLibEJB");
+		} catch (NamingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
 		String login = (String) request.getParameter("login");
         String password = (String) request.getParameter("password");
         
@@ -71,7 +97,6 @@ public class Process extends HttpServlet {
         		  session.setMaxInactiveInterval(30);
         		  session.setAttribute("connected", "Bibliotecaire");
         		  session.setAttribute("username", login);
-        		  
         }
         
         else if (login.equals("max") && password.equals("pwdmax")) {
@@ -80,13 +105,6 @@ public class Process extends HttpServlet {
 	  		  session.setAttribute("connected", "Adherent");
 	  		  session.setAttribute("username", login);
         }
-
-        //else {
-        //		  HttpSession session = request.getSession();
-        	//	  session.setMaxInactiveInterval(30);
-        	//	  session.setAttribute("connected", "Temporaire");
-        	//	  session.setAttribute("username", "Anonyme");
-        //}    
 	    }
 	
 	//Méthode pour créer une bibliothèque
