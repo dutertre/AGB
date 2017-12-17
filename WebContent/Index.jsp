@@ -22,7 +22,6 @@ Password: <input type='password' name='password' />
 
 <h2>Informations</h2>
 <%
-
 try{
 	if (session.getAttribute("connected").equals("Mauvais login ou mot de passe.")){
 		out.println(session.getAttribute("connected"));
